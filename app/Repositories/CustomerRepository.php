@@ -20,7 +20,7 @@ class CustomerRepository implements CustomerRepositoryInterface
     public function getCustomerById($customerId)
     {
         $customer = Customer::find($customerId);
-        if (!$customer) throw new \Exception('Customer not found');
+        // if (!$customer) throw new \Exception('Customer not found');
 
         return Customer::findOrFail($customerId);
     }
@@ -83,6 +83,19 @@ class CustomerRepository implements CustomerRepositoryInterface
                 'syncronize type'   => 'data updated',
             ];
         }
+    }
+
+    public function searchCustomer(array $data)
+    {
+        $keyword = $data['keyword'];
+
+        $customers = Customer::where('name', 'like', '%'.$keyword.'%')
+                             ->orWhere('phone_number', 'like', '%'.$keyword.'%')
+                             ->get();
+
+        if ($customers->isEmpty()) throw new \Exception("Data with the keyword '{$keyword}' not found", 404);
+
+        return $customers;
     }
 }
 

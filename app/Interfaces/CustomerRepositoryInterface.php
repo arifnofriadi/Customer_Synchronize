@@ -10,6 +10,7 @@ interface CustomerRepositoryInterface
     public function updateCustomer($customerId, array $data);
     public function deleteCustomer($customerId);
     public function synchronizeCustomer(array $data);
+    public function searchCustomer(array $data);
 }
 
 ?>

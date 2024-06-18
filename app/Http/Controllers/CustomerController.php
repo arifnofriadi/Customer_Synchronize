@@ -81,7 +81,7 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+
     }
 
     /**
@@ -182,6 +182,22 @@ class CustomerController extends Controller
             if (!$customer) return $this->error('customer not found', 404);
             $response = $this->customerRepository->deleteCustomer($customerId);
             return $this->success($response, 'customer deleted successfully');
+        } catch (\Throwable $th) {
+            Log::error([
+                'Message'   => $th->getMessage(),
+                'On Line'   => $th->getLine(),
+                'On File'   => $th->getFile(),
+            ]);
+
+            return $this->error($th->getMessage(), 400);
+        }
+    }
+
+    public function search($keyword)
+    {
+        try {
+            $response = $this->customerRepository->searchCustomer(['keyword' => $keyword]);
+            return $this->success($response, 'search customer successfully');
         } catch (\Throwable $th) {
             Log::error([
                 'Message'   => $th->getMessage(),
