@@ -20,7 +20,7 @@ class CustomerRepository implements CustomerRepositoryInterface
     public function getCustomerById($customerId)
     {
         $customer = Customer::find($customerId);
-        // if (!$customer) throw new \Exception('Customer not found');
+        if (!$customer) throw new \Exception('Customer not found');
 
         return Customer::findOrFail($customerId);
     }
